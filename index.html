@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dwight Pagan Lugo - Visual Resume</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!--
+
+Infographic Plan:
+
+1. Hero Section: Name, Title, Tagline, Contact Icons/Links.
+
+2. Summary/Snapshot: "7+ Years of Experience", Key expertise areas (Data Science, Cloud, ML).
+
+3. Skills Showcase: Radar Chart for skill categories.
+
+4. Experience Highlights: Card-based layout for 3-4 key roles.
+
+5. Key Projects Spotlight: Cards for 2-3 impactful projects.
+
+6. Education & Certifications: Cleanly presented.
+
+7. Languages.
+
+
+
+Visualization Choices:
+
+- Years of Experience (Stat): Inform -> Single Big Number (HTML) -> Direct & impactful. NO SVG.
+
+- Skills Distribution (Comparison): Compare -> Radar Chart (Chart.js Canvas) -> Shows strengths across multiple categories. NO SVG.
+
+- Experience Highlights (Organize): Organize -> HTML/CSS Cards -> Clear, structured presentation of roles. NO SVG.
+
+- Project Spotlight (Organize): Organize -> HTML/CSS Cards -> Highlights key projects. NO SVG.
+
+
+Color Palette Chosen: "Professional Blue & Gold Fusion" (Conceptual)
+
+Primary: #005A9C (Deep Professional Blue)
+
+Accent: #FFC107 (Bright Gold/Yellow)
+
+Secondary/Text: #333333 (Dark Gray)
+
+Background: #F4F6F8 (Very Light Gray)
+
+Card Background: #FFFFFF (White)
+
+
+
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All charts are Chart.js (Canvas). Diagrams are HTML/CSS.
+
+-->
+
+    <style>
+        body {
+
+            font-family: 'Inter', sans-serif;
+
+            background-color: #F4F6F8;
+            /* Very Light Gray Background */
+
+            color: #333333;
+
+        }
+
+        .chart-container {
+
+            position: relative;
+
+            width: 100%;
+
+            max-width: 500px;
+
+            margin-left: auto;
+
+            margin-right: auto;
+
+            height: 350px;
+            /* Default height */
+
+            max-height: 400px;
+
+        }
+
+        @media (min-width: 768px) {
+
+            .chart-container {
+
+                height: 400px;
+
+            }
+
+        }
+
+        .section-title {
+
+            color: #005A9C;
+            /* Deep Professional Blue */
+
+            border-bottom: 2px solid #FFC107;
+            /* Bright Gold Accent */
+
+            padding-bottom: 0.5rem;
+
+        }
+
+        .card {
+
+            background-color: #FFFFFF;
+            /* White */
+
+            border-radius: 0.5rem;
+
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        }
+
+        .card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+        }
+
+        .tag {
+
+            background-color: #E0E7FF;
+            /* Light blue for tags */
+
+            color: #005A9C;
+            /* Darker blue text for tags */
+
+            padding: 0.25rem 0.75rem;
+
+            border-radius: 9999px;
+
+            font-size: 0.875rem;
+
+            font-weight: 500;
+
+        }
+
+        .icon-placeholder {
+            /* For Unicode icons or simple styled text */
+
+            display: inline-block;
+
+            width: 1.25em;
+
+            height: 1.25em;
+
+            text-align: center;
+
+            line-height: 1.25em;
+
+            margin-right: 0.5em;
+
+            color: #005A9C;
+
+        }
+
+        .timeline-item {
+
+            position: relative;
+
+            padding-left: 2.5rem;
+            /* Space for the dot and line */
+
+            padding-bottom: 1.5rem;
+
+            border-left: 2px solid #005A9C;
+            /* Timeline vertical line */
+
+        }
+
+        .timeline-item:last-child {
+
+            border-left: 2px solid transparent;
+            /* Hide line for the last item if it looks better */
+
+            padding-bottom: 0;
+
+        }
+
+        .timeline-dot {
+
+            position: absolute;
+
+            left: -0.5625rem;
+            /* Adjust to center the dot on the line */
+
+            top: 0.25rem;
+
+            height: 1rem;
+
+            width: 1rem;
+
+            background-color: #FFC107;
+            /* Gold dot */
+
+            border-radius: 50%;
+
+            border: 2px solid #FFFFFF;
+
+        }
+
+        .contact-icon {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 2rem;
+
+            height: 2rem;
+
+            border-radius: 50%;
+
+            background-color: #005A9C;
+
+            color: white;
+
+            font-size: 1rem;
+
+            margin-right: 0.5rem;
+
+            text-decoration: none;
+
+        }
+
+        .contact-icon:hover {
+
+            background-color: #004C80;
+
+        }
+    </style>
+
+</head>
+
+<body class="antialiased">
+
+
+
+    <header
+        class="bg-gradient-to-r from-blue-700 to-blue-900 text-white p-8 md:p-12 text-center rounded-b-xl shadow-xl">
+
+        <div class="max-w-4xl mx-auto">
+
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">DWIGHT PAGAN LUGO</h1>
+
+            <h2 class="text-2xl md:text-3xl font-semibold text-yellow-400 mb-4">Data Scientist</h2>
+
+            <p class="text-lg md:text-xl mb-6 max-w-2xl mx-auto">
+
+                Transforming complex data into actionable insights using advanced analytics, cloud technologies, and
+                machine learning.
+
+            </p>
+
+            <div class="flex justify-center items-center space-x-4">
+
+                <a href="tel:+15712743213" class="contact-icon" title="Call">📞</a>
+
+                <a href="mailto:paganlugodj@gmail.com" class="contact-icon" title="Email">✉️</a>
+
+                <a href="https://linkedin.com/in/dpaganlugo" target="_blank" class="contact-icon" title="LinkedIn">L</a>
+
+                <a href="https://eportfolio.mygreatlearning.com/dwight-josef-pagan-lugo" target="_blank"
+                    class="contact-icon" title="ePortfolio">P</a>
+
+                <a href="https://github.com/Dpagan/DJPL" target="_blank" class="contact-icon" title="GitHub">G</a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="container mx-auto p-4 md:p-8">
+
+
+
+        <section id="snapshot" class="my-8 md:my-12 text-center">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="card p-6">
+
+                    <div class="text-5xl font-bold text-blue-700 mb-2">7+</div>
+
+                    <p class="text-xl font-semibold text-gray-700">Years of Experience</p>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <div class="icon-placeholder text-4xl mb-2">💡</div>
+
+                    <p class="text-xl font-semibold text-gray-700">Advanced Analytics</p>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <div class="icon-placeholder text-4xl mb-2">☁️</div>
+
+                    <p class="text-xl font-semibold text-gray-700">Cloud & ML Solutions</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section id="skills" class="my-8 md:my-12">
+
+            <h2 class="text-3xl font-semibold section-title mb-8 text-center">Core Competencies</h2>
+
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+
+                <p class="text-gray-700 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+
+                    My expertise spans across several key areas in data science, enabling me to tackle diverse
+                    challenges and deliver comprehensive solutions. The radar chart below visualizes my relative
+                    proficiency across these domains.
+
+                </p>
+
+                <div class="chart-container mx-auto h-80 md:h-96">
+
+                    <canvas id="skillsRadarChart"></canvas>
+
+                </div>
+
+                <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-sm text-center">
+
+                    <div><span class="font-semibold text-blue-700">1.</span> Programming & DBs</div>
+
+                    <div><span class="font-semibold text-blue-700">2.</span> Data Viz & BI</div>
+
+                    <div><span class="font-semibold text-blue-700">3.</span> Cloud & Big Data</div>
+
+                    <div><span class="font-semibold text-blue-700">4.</span> ML/AI & Analytics</div>
+
+                    <div><span class="font-semibold text-blue-700">5.</span> Tools & Platforms</div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section id="experience" class="my-8 md:my-12">
+
+            <h2 class="text-3xl font-semibold section-title mb-8 text-center">Career Journey</h2>
+
+            <p class="text-gray-700 leading-relaxed mb-8 text-center max-w-3xl mx-auto">
+
+                My career has been a progressive journey through various data-centric roles, primarily supporting
+                federal and commercial clients. Below are highlights from my recent key positions, showcasing my
+                contributions and the technologies I've leveraged.
+
+            </p>
+
+            <div class="space-y-8">
+
+                <div class="card p-6 md:p-8">
+
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-1">Data Scientist (Contractor)</h3>
+
+                    <p class="text-md text-gray-600 mb-1">The Prospective Group (for DCSA) | Remote</p>
+
+                    <p class="text-sm text-gray-500 mb-3">Nov 2024 – May 2025 (Role ended due to organizational layoff)
+                    </p>
+
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+
+                        <li>Architected secure cloud solutions (AWS) and defined IT enterprise patterns.</li>
+
+                        <li>Led AI/ML model development, predictive modeling, and intelligence analysis.</li>
+
+                        <li>Conducted AWS cost estimates, architecture reviews, and CONOPS documentation.</li>
+
+                    </ul>
+
+                    <div class="flex flex-wrap gap-2">
+
+                        <span class="tag">AWS</span><span class="tag">Enterprise Architecture</span><span
+                            class="tag">AI/ML</span><span class="tag">Python</span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="card p-6 md:p-8">
+
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-1">Data Scientist (Contractor)</h3>
+
+                    <p class="text-md text-gray-600 mb-1">Deloitte (for DHS I&A) | Washington, DC</p>
+
+                    <p class="text-sm text-gray-500 mb-3">Feb 2024 – Nov 2024</p>
+
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+
+                        <li>Developed cloud/web apps (Python, HTML, CSS) and optimized data processing with AWS (EC2,
+                            Lambda, S3, SageMaker).</li>
+
+                        <li>Applied ML (LinReg, Trees, NLP) and built document parsing/search with KNN & Neural Nets.
+                        </li>
+
+                        <li>Utilized Scikit-learn, spaCy, NLTK for sentiment analysis and text extraction.</li>
+
+                    </ul>
+
+                    <div class="flex flex-wrap gap-2">
+
+                        <span class="tag">AWS</span><span class="tag">Python</span><span class="tag">Machine
+                            Learning</span><span class="tag">NLP</span><span class="tag">OpenSearch</span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="card p-6 md:p-8">
+
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-1">Data Engineer BI Developer (Subcontractor)
+                    </h3>
+
+                    <p class="text-md text-gray-600 mb-1">TEKsystems (for OUSD I&S) | Arlington, VA</p>
+
+                    <p class="text-sm text-gray-500 mb-3">Jul 2023 – Feb 2024</p>
+
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+
+                        <li>Integrated Databricks within ADVANA, boosting data processing speed by 45%.</li>
+
+                        <li>Designed dashboards (Python, SQL, Qlik Sense) and executed ETL processes.</li>
+
+                    </ul>
+
+                    <div class="flex flex-wrap gap-2">
+
+                        <span class="tag">Databricks</span><span class="tag">ETL</span><span
+                            class="tag">Python</span><span class="tag">SQL</span><span class="tag">Qlik Sense</span>
+
+                    </div>
+
+                </div>
+
+                <div class="card p-6 md:p-8">
+
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-1">Senior Data Analyst (Subcontractor)</h3>
+
+                    <p class="text-md text-gray-600 mb-1">Insight Global (for U.S. SOCOM J2) | Tampa, FL</p>
+
+                    <p class="text-sm text-gray-500 mb-3">Mar 2022 – Jul 2023</p>
+
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-3">
+
+                        <li>Developed ad hoc reports & KPI dashboards (Excel, Tableau, Python).</li>
+
+                        <li>Performed EDA on Oracle DBs (SQL) and developed R Shiny applications.</li>
+
+                    </ul>
+
+                    <div class="flex flex-wrap gap-2">
+
+                        <span class="tag">Tableau</span><span class="tag">Python</span><span class="tag">SQL</span><span
+                            class="tag">R Shiny</span><span class="tag">EDA</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section id="projects" class="my-8 md:my-12">
+
+            <h2 class="text-3xl font-semibold section-title mb-8 text-center">Project Highlights</h2>
+
+            <p class="text-gray-700 leading-relaxed mb-8 text-center max-w-3xl mx-auto">
+
+                These academic projects demonstrate my ability to apply diverse data science methodologies to solve
+                practical problems, from business analytics to predictive modeling.
+
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <div class="card p-6">
+
+                    <h4 class="text-xl font-semibold text-blue-700 mb-2">Cardio Fitness Analytics</h4>
+
+                    <p class="text-sm text-gray-500 mb-2">Business Analytics | Python</p>
+
+                    <p class="text-gray-700 text-sm mb-3">Evaluated product performance and sales drivers using
+                        Univariate & Bi-Variate analysis.</p>
+
+                    <span class="tag">Python</span> <span class="tag">EDA</span>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <h4 class="text-xl font-semibold text-blue-700 mb-2">E-news Express Optimization</h4>
+
+                    <p class="text-sm text-gray-500 mb-2">Business Statistics | A/B Testing</p>
+
+                    <p class="text-gray-700 text-sm mb-3">Assessed landing page effectiveness via Hypothesis Testing and
+                        Data Visualization.</p>
+
+                    <span class="tag">Statistics</span> <span class="tag">Data Visualization</span>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <h4 class="text-xl font-semibold text-blue-700 mb-2">ReCell Dynamic Pricing</h4>
+
+                    <p class="text-sm text-gray-500 mb-2">Supervised Learning | Regression</p>
+
+                    <p class="text-gray-700 text-sm mb-3">Built a Linear Regression model for pricing used electronic
+                        devices.</p>
+
+                    <span class="tag">Machine Learning</span> <span class="tag">Python</span>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <h4 class="text-xl font-semibold text-blue-700 mb-2">ExtraaLearn Lead Conversion</h4>
+
+                    <p class="text-sm text-gray-500 mb-2">Supervised Learning | Classification</p>
+
+                    <p class="text-gray-700 text-sm mb-3">Developed Logistic Regression & Decision Tree models to
+                        predict student lead conversions.</p>
+
+                    <span class="tag">Classification</span> <span class="tag">AUC-ROC</span>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <h4 class="text-xl font-semibold text-blue-700 mb-2">nSports Player Segmentation</h4>
+
+                    <p class="text-sm text-gray-500 mb-2">Unsupervised Learning | Clustering</p>
+
+                    <p class="text-gray-700 text-sm mb-3">Used K-means & Hierarchical Clustering for athlete performance
+                        segmentation.</p>
+
+                    <span class="tag">Clustering</span> <span class="tag">EDA</span>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <h4 class="text-xl font-semibold text-blue-700 mb-2">KC Roasters Price Prediction</h4>
+
+                    <p class="text-sm text-gray-500 mb-2">Model Tuning | Predictive Modeling</p>
+
+                    <p class="text-gray-700 text-sm mb-3">Applied Hyperparameter Tuning & Regularization for coffee bean
+                        pricing models.</p>
+
+                    <span class="tag">Predictive Modeling</span> <span class="tag">Python</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section id="education" class="my-8 md:my-12">
+
+            <h2 class="text-3xl font-semibold section-title mb-8 text-center">Education & Certifications</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <div class="card p-6">
+
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Formal Education</h3>
+
+                    <div class="space-y-4">
+
+                        <div>
+
+                            <p class="font-semibold text-gray-800">MS, Data Science and Analytics</p>
+
+                            <p class="text-sm text-gray-600">Georgia Institute of Technology (Expected 2027)</p>
+
+                        </div>
+
+                        <div>
+
+                            <p class="font-semibold text-gray-800">Post-Graduate Certificate, Data Science & Business
+                                Analytics</p>
+
+                            <p class="text-sm text-gray-600">University of Texas at Austin, McCombs School of Business
+                                (2024)</p>
+
+                        </div>
+
+                        <div>
+
+                            <p class="font-semibold text-gray-800">BA, Economics</p>
+
+                            <p class="text-sm text-gray-600">Universidad De Puerto Rico, Recinto De Mayaguez (2016)</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card p-6">
+
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3">Certifications</h3>
+
+                    <div class="flex items-center">
+
+                        <span class="icon-placeholder text-2xl">🏆</span>
+
+                        <div>
+
+                            <p class="font-semibold text-gray-800">Tableau Desktop Specialist</p>
+
+                            <p class="text-sm text-gray-600">Validates foundational Tableau skills.</p>
+
+                        </div>
+
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-blue-700 mt-6 mb-3">Languages</h3>
+
+                    <div class="flex items-center mb-2">
+
+                        <span class="icon-placeholder text-xl">🗣️</span>
+
+                        <p class="font-semibold text-gray-800">English: <span
+                                class="font-normal text-gray-600">Native</span></p>
+
+                    </div>
+
+                    <div class="flex items-center">
+
+                        <span class="icon-placeholder text-xl">🗣️</span>
+
+                        <p class="font-semibold text-gray-800">Spanish: <span
+                                class="font-normal text-gray-600">Native</span></p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer class="text-center p-6 bg-gray-800 text-gray-300 text-sm rounded-t-lg mt-12">
+
+        <p>&copy; <span id="currentYear"></span> Dwight Pagan Lugo. All Rights Reserved.</p>
+
+        <p>Visual resume created with HTML, Tailwind CSS, and Chart.js.</p>
+
+    </footer>
+
+
+
+    <script>
+
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+
+
+        const primaryColor = '#005A9C'; // Deep Professional Blue
+
+        const accentColor = '#FFC107'; // Bright Gold/Yellow
+
+        const textDarkColor = '#333333';
+
+        const gridLineColor = '#E0E0E0';
+
+
+
+
+
+        function wrapLabels(labels, maxWidth) {
+
+            return labels.map(label => {
+
+                if (typeof label === 'string' && label.length > maxWidth) {
+
+                    const words = label.split(' ');
+
+                    const lines = [];
+
+                    let currentLine = '';
+
+                    words.forEach(word => {
+
+                        if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+
+                            lines.push(currentLine.trim());
+
+                            currentLine = word + ' ';
+
+                        } else {
+
+                            currentLine += word + ' ';
+
+                        }
+
+                    });
+
+                    lines.push(currentLine.trim());
+
+                    return lines;
+
+                }
+
+                return label;
+
+            });
+
+        }
+
+
+        const tooltipConfig = {
+
+            plugins: {
+
+                tooltip: {
+
+                    callbacks: {
+
+                        title: function (tooltipItems) {
+
+                            const item = tooltipItems[0];
+
+                            let label = item.chart.data.labels[item.dataIndex];
+
+                            if (Array.isArray(label)) {
+
+                                return label.join(' ');
+
+                            } else {
+
+                                return label;
+
+                            }
+
+                        }
+
+                    },
+
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+
+                    titleFont: { size: 14, weight: 'bold' },
+
+                    bodyFont: { size: 12 },
+
+                    padding: 10,
+
+                    cornerRadius: 4
+
+                }
+
+            }
+
+        };
+
+
+
+        // Skills Radar Chart
+
+        const skillsRadarCtx = document.getElementById('skillsRadarChart').getContext('2d');
+
+        new Chart(skillsRadarCtx, {
+
+            type: 'radar',
+
+            data: {
+
+                labels: wrapLabels([
+
+                    'Programming & DBs',
+
+                    'Data Viz & BI',
+
+                    'Cloud & Big Data',
+
+                    'ML/AI & Analytics',
+
+                    'Tools & Platforms'
+
+                ], 16),
+
+                datasets: [{
+
+                    label: 'Proficiency Level (Self-Assessed)',
+
+                    data: [90, 85, 80, 88, 90], // Placeholder scores (0-100) - Adjust based on your self-assessment
+
+                    backgroundColor: 'rgba(0, 90, 156, 0.2)', // Semi-transparent blue
+
+                    borderColor: primaryColor,
+
+                    pointBackgroundColor: primaryColor,
+
+                    pointBorderColor: '#fff',
+
+                    pointHoverBackgroundColor: '#fff',
+
+                    pointHoverBorderColor: primaryColor,
+
+                    borderWidth: 2
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    r: {
+
+                        angleLines: { color: gridLineColor },
+
+                        grid: { color: gridLineColor },
+
+                        pointLabels: {
+
+                            font: { size: 11, weight: '600' },
+
+                            color: textDarkColor
+
+                        },
+
+                        ticks: {
+
+                            backdropColor: 'rgba(255, 255, 255, 0.75)',
+
+                            color: textDarkColor,
+
+                            stepSize: 20,
+
+                            font: { size: 10 }
+
+                        },
+
+                        suggestedMin: 0,
+
+                        suggestedMax: 100
+
+                    }
+
+                },
+
+                plugins: {
+
+                    ...tooltipConfig.plugins,
+
+                    legend: {
+
+                        position: 'top',
+
+                        labels: {
+
+                            color: textDarkColor,
+
+                            font: { size: 12, weight: '600' }
+
+                        }
+
+                    }
+
+                },
+
+                elements: {
+
+                    line: {
+
+                        borderWidth: 3
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
